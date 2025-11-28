@@ -95,6 +95,6 @@ jobs:
     with:
       round: ${{ needs.setup.outputs.round }}
       is-sprint: ${{ needs.setupt.outputs.is_sprint }}
-      artifact-id: ${{ f1-data-downloader.outputs.artifact-id }}
+      artifact-id: ${{ needs.f1-data-downloader.outputs.artifact-id }}
       run-id: ${{ needs.f1-data-downloader.outputs.run-id }}
       f1-db-version: ${{ inputs.f1-db-version }}

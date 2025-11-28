@@ -9,6 +9,8 @@ on:
         default: latest
         description: The F1 DB version to base the update on.
     outputs:
+      should-update:
+        value: ${{ jobs.setup.outputs.should-update }}
       artifact-id:
         value: ${{ jobs.main.steps.update-f1-db.outputs.artifact-id }}
       run-id:
@@ -23,12 +25,12 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      race_id: ${{ steps.setup.outputs.race_id }}
+      race-id: ${{ steps.setup.outputs.race-id }}
       season: ${{ steps.setup.outputs.season }}
       round: ${{ steps.setup.outputs.round }}
-      race_name: ${{ steps.setup.outputs.race_name }}
-      should_update: ${{ steps.setup.outputs.should_update }}
-      is_sprint: ${{ steps.setup.outputs.is_sprint }}
+      race-name: ${{ steps.setup.outputs.race_name }}
+      should-update: ${{ steps.setup.outputs.should-update }}
+      is-sprint: ${{ steps.setup.outputs.is-sprint }}
 
     services:
       database:
@@ -74,27 +76,27 @@ jobs:
           is_sprint=$($([[ $sprint_race_date -eq "NULL" ]]) && echo 'false' || echo 'true')
           echo "round=$round" >> $GITHUB_OUTPUT
           echo "season=$season" >> $GITHUB_OUTPUT
-          echo "race_id=$race_id" >> $GITHUB_OUTPUT
-          echo "race_name=$race_name" >> $GITHUB_OUTPUT
-          echo "should_update=$should_update" >> $GITHUB_OUTPUT
-          echo "is_sprint=$is_sprint" >> $GITHUB_OUTPUT
+          echo "race-id=$race_id" >> $GITHUB_OUTPUT
+          echo "race-name=$race_name" >> $GITHUB_OUTPUT
+          echo "should-update=$should_update" >> $GITHUB_OUTPUT
+          echo "is-sprint=$is_sprint" >> $GITHUB_OUTPUT
 
   f1-data-downloader:
     needs: setup
-    if: needs.setup.outputs.should_update == 'true'  
+    if: needs.setup.outputs.should-update == 'true'  
 
     uses: race-tech/f1-data-downloader/.github/workflows/download_and_parse.yml@main
     with:
       season: ${{ needs.setup.outputs.season }}
-      grand_prix: ${{ needs.setup.outputs.race_name }}
-      is_sprint: ${{ needs.setupt.outputs.is_sprint }}
+      grand_prix: ${{ needs.setup.outputs.race-name }}
+      is_sprint: ${{ needs.setupt.outputs.is-sprint }}
 
   f1-sql-updater:
     needs: [setup, f1-data-downloader]
     uses: race-tech/f1-sql-updater/.github/workflows/run_sql_updater.yml@main
     with:
       round: ${{ needs.setup.outputs.round }}
-      is-sprint: ${{ needs.setupt.outputs.is_sprint }}
+      is-sprint: ${{ needs.setupt.outputs.is-sprint }}
       artifact-id: ${{ needs.f1-data-downloader.outputs.artifact-id }}
       run-id: ${{ needs.f1-data-downloader.outputs.run-id }}
       f1-db-version: ${{ inputs.f1-db-version }}

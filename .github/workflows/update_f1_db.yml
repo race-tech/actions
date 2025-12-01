@@ -30,7 +30,7 @@ jobs:
       race-id: ${{ steps.setup.outputs.race-id }}
       season: ${{ steps.setup.outputs.season }}
       round: ${{ steps.setup.outputs.round }}
-      race-name: ${{ steps.setup.outputs.race_name }}
+      race-name: ${{ steps.setup.outputs.race-name }}
       should-update: ${{ steps.setup.outputs.should-update }}
       is-sprint: ${{ steps.setup.outputs.is-sprint }}
 

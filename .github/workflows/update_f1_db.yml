@@ -66,6 +66,15 @@ jobs:
           echo "race-name=$race_name" >> $GITHUB_OUTPUT
           echo "should-update=$should_update" >> $GITHUB_OUTPUT
           echo "is-sprint=$is_sprint" >> $GITHUB_OUTPUT
+      - name: Check variables
+        shell: bash
+        run: |
+          echo "Round: ${{ steps.setup.outputs.round }}"
+          echo "Season: ${{ steps.setup.outputs.season }}"
+          echo "Race ID: ${{ steps.setup.outputs.race-id }}"
+          echo "Race name: ${{ steps.setup.outputs.race-name }}"
+          echo "Should update: ${{ steps.setup.outputs.should-update }}"
+          echo "Is sprint: ${{ steps.setup.outputs.is-sprint }}"
 
   f1-data-downloader:
     needs: setup

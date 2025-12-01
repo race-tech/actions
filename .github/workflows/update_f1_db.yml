@@ -39,7 +39,7 @@ jobs:
         image: ghcr.io/race-tech/f1-db:${{ inputs.f1-db-version }}
         env:
           MYSQL_DATABASE: f1db
-          MYSQL_ROOT_PASSWORD: ${{ jobs.setup.env.MYSQL_PWD }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PWD }}
         ports:
           - 13306:3306
         options: --health-cmd="mysqladmin ping -u root" --health-interval=10s --health-timeout=5s --health-retries=3

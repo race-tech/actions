@@ -8,6 +8,14 @@ on:
         required: false
         default: latest
         description: The F1 DB version to base the update on.
+      repository:
+        type: string
+        required: true
+        description: The repository from where we'll pull the csv files.
+    secrets:
+      access-token:
+        required: true
+        description: The access token to retrieve artifacts from the repository.
     outputs:
       should-update:
         value: ${{ jobs.setup.outputs.should-update }}
@@ -94,4 +102,7 @@ jobs:
       is-sprint: ${{ needs.setup.outputs.is-sprint == 'false' }}
       artifact-id: ${{ needs.f1-data-downloader.outputs.artifact-id }}
       run-id: ${{ fromJSON(needs.f1-data-downloader.outputs.run-id) }}
+      repository: ${{ inputs.repository }}
       f1-db-version: ${{ inputs.f1-db-version }}
+    secrets:
+      access-token: ${{ secrets.access-token }}

@@ -12,9 +12,9 @@ on:
       should-update:
         value: ${{ jobs.setup.outputs.should-update }}
       artifact-id:
-        value: ${{ jobs.main.steps.update-f1-db.outputs.artifact-id }}
+        value: ${{ jobs.f1-sql-updater.outputs.artifact-id }}
       run-id:
-        value: ${{ jobs.main.steps.update-f1-db.outputs.run-id }}
+        value: ${{ jobs.f1-sql-updater.outputs.run-id }}
 
 
 

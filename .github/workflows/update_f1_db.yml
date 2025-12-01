@@ -16,13 +16,15 @@ on:
       run-id:
         value: ${{ jobs.main.steps.update-f1-db.outputs.run-id }}
 
-env:
-  MYSQL_PWD: password
+
 
 jobs:
   setup:
     name: Setup env variables and check if update is needed
     runs-on: ubuntu-latest
+
+    env:
+      MYSQL_PWD: password
 
     outputs:
       race-id: ${{ steps.setup.outputs.race-id }}
@@ -37,7 +39,7 @@ jobs:
         image: ghcr.io/race-tech/f1-db:${{ inputs.f1-db-version }}
         env:
           MYSQL_DATABASE: f1db
-          MYSQL_ROOT_PASSWORD: $MYSQL_PWD
+          MYSQL_ROOT_PASSWORD: ${{ jobs.setup.env.MYSQL_PWD }}
         ports:
           - 13306:3306
         options: --health-cmd="mysqladmin ping -u root" --health-interval=10s --health-timeout=5s --health-retries=3

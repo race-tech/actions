@@ -9,6 +9,7 @@ on:
         default: latest
         description: The F1 DB version to base the update on.
       repository:
+        default: ${{ github.repository }}
         type: string
         required: true
         description: The repository from where we'll pull the csv files.

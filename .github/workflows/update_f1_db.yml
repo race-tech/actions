@@ -20,7 +20,7 @@ on:
 
 jobs:
   setup:
-    name: Setup env variables and check if update is needed
+    name: Setup variables and check if update is needed
     runs-on: ubuntu-latest
 
     env:
@@ -53,11 +53,11 @@ jobs:
         id: setup
         shell: bash
         run: |
-          race_id=$(echo "SELECT r.raceId FROM races AS r WHERE r.date < '$(date +'%Y-%m-%d')' ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
-          season=$(echo "SELECT r.year FROM races AS r WHERE r.date < '$(date +'%Y-%m-%d')' ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
-          round=$(echo "SELECT r.round FROM races AS r WHERE r.date < '$(date +'%Y-%m-%d')' ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
-          race_name=$(echo "SELECT r.name FROM races AS r WHERE r.date < '$(date +'%Y-%m-%d')' ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
-          sprint_race_date=$(echo "SELECT r.sprint_date FROM races AS r WHERE r.date < '$(date +'%Y-%m-%d')' ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
+          race_id=$(echo "SELECT r.raceId FROM races AS r WHERE r.date < DATE('$(date +'%Y-%m-%d')') ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
+          season=$(echo "SELECT r.year FROM races AS r WHERE r.date < DATE('$(date +'%Y-%m-%d')') ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
+          round=$(echo "SELECT r.round FROM races AS r WHERE r.date < DATE('$(date +'%Y-%m-%d')') ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
+          race_name=$(echo "SELECT r.name FROM races AS r WHERE r.date < DATE('$(date +'%Y-%m-%d')') ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
+          sprint_race_date=$(echo "SELECT r.sprint_date FROM races AS r WHERE r.date < DATE('$(date +'%Y-%m-%d')') ORDER BY r.date DESC LIMIT 1" | mysql -h 127.0.0.1 -P 13306 --protocol=tcp -u root -D f1db | tail -1 | xargs)
           should_update=$([ $(echo "SELECT resultId FROM results WHERE raceId = $race_id" | mysql -h 127.0.0.1 -P 13306 --protocol=TCP -u root -D f1db | wc -l) -ge 1 ] && echo 'false' || echo 'true')
           is_sprint=$($([[ $sprint_race_date -eq "NULL" ]]) && echo 'false' || echo 'true')
           echo "round=$round" >> $GITHUB_OUTPUT

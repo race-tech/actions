@@ -75,7 +75,7 @@ jobs:
     with:
       season: ${{ needs.setup.outputs.season }}
       grand_prix: ${{ needs.setup.outputs.race-name }}
-      is_sprint: ${{ needs.setupt.outputs.is-sprint }}
+      is_sprint: ${{ needs.setup.outputs.is-sprint }}
 
   f1-sql-updater:
     needs: [setup, f1-data-downloader]

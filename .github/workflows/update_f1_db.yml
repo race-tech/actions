@@ -91,7 +91,7 @@ jobs:
     uses: race-tech/f1-sql-updater/.github/workflows/run_sql_updater.yml@main
     with:
       round: ${{ needs.setup.outputs.round }}
-      is-sprint: ${{ needs.setupt.outputs.is-sprint }}
+      is-sprint: ${{ needs.setup.outputs.is-sprint }}
       artifact-id: ${{ needs.f1-data-downloader.outputs.artifact-id }}
       run-id: ${{ needs.f1-data-downloader.outputs.run-id }}
       f1-db-version: ${{ inputs.f1-db-version }}

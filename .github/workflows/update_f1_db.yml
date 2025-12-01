@@ -11,7 +11,7 @@ on:
       repository:
         default: ${{ github.repository }}
         type: string
-        required: true
+        required: false
         description: The repository from where we'll pull the csv files.
     secrets:
       access-token:
